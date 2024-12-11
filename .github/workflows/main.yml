@@ -16,6 +16,10 @@ jobs:
         with:
           python-version: '3.10'
           cache: 'pipenv'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
       - uses: insightsengineering/pip-action@v2
         with:
           packages: |
