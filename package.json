@@ -1,0 +1,14 @@
+{
+  "name": "qa-automation-challenge",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "node start-server.js",
+    "client": "node start-client.js",
+    "setup": "npm i && cd client && npm i && cd ../server && npm i"
+  },
+  "devDependencies": {
+    "concurrently": "4.1.1"
+  }
+}
