@@ -20,8 +20,6 @@ jobs:
         with:
           packages: |
             pipenv
-      - run: pip install 
-      - run: echo $(ls -ls)
       - run: npm run setup
       - run: npm run start&
       - run: pipenv install
