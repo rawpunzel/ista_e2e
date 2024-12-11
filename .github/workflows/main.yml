@@ -12,6 +12,10 @@ jobs:
         browser: [firefox, chromium, webkit]
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pipenv'
       - run: echo $(ls -ls)
       - run: npm run setup
       - run: npm run start&
