@@ -5,7 +5,7 @@ on:
     types: [opened, reopened]
 jobs:
   E2E-Tests:
-    runs-on: nikolaik/python-nodejs:python3.10-nodejs23
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         browser: [firefox, chromium, webkit]
