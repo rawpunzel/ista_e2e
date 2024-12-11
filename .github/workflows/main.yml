@@ -11,6 +11,7 @@ jobs:
       matrix:
         browser: [firefox, chromium, webkit]
     steps:
+      - uses: actions/checkout@v4
       - run: echo $(ls -ls)
       - run: npm run setup
       - run: npm run start&
