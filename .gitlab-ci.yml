@@ -34,6 +34,8 @@ unit-test-job:   # This job runs in the test stage.
     - npm run setup
     - npm run start&
     - sleep 10
+    - pipenv install
+    - pipenv shell
   script:
     - python -m unittest discover -s tests -p '*_test.py'
     - echo "Running unit tests... This will take about 60 seconds."
