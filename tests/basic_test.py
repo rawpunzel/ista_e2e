@@ -1,5 +1,6 @@
 import unittest
 import time
+from os import environ
 import re
 from dataclasses import dataclass
 from playwright.sync_api import Playwright, sync_playwright, expect
@@ -35,8 +36,9 @@ class TestChangeAppointment(unittest.TestCase):
         appointments.append(appointments[0])
 
         with sync_playwright() as playwright:
-            # browser = playwright.chromium.launch(headless=True)
-            browsobj = getattr(playwright, "chromium")
+            browsername = environ.get("browser", "chromium").lower()
+            print(browsername)
+            browsobj = getattr(playwright, browsername)
             browser = browsobj.launch(headless=True)
             context = browser.new_context()
             page = context.new_page()
