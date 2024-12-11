@@ -16,7 +16,10 @@
 # This specific template is located at:
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
 
-image: python3.10-nodejs23-bullseye
+image: nikolaik/python-nodejs:python3.10-nodejs23
+
+variables:
+  browser: Firefox
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
@@ -35,8 +38,10 @@ unit-test-job:   # This job runs in the test stage.
     - npm run start&
     - sleep 10
     - pipenv install
+    - pipenv run playwright install-deps
     - pipenv run playwright install 
   script:
+    - pipenv run echo $browser
     - pipenv run python -m unittest discover -s tests -p '*_test.py'
     - echo "Running unit tests... This will take about 60 seconds."
     - sleep 60
