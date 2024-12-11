@@ -36,8 +36,7 @@ class TestChangeAppointment(unittest.TestCase):
         appointments.append(appointments[0])
 
         with sync_playwright() as playwright:
-            # browser = playwright.chromium.launch(headless=True)
-            browsername = environ.get("browser", "chromium")
+            browsername = environ.get("browser", "chromium").lower()
             print(browsername)
             browsobj = getattr(playwright, browsername)
             browser = browsobj.launch(headless=True)

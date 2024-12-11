@@ -19,7 +19,7 @@
 image: nikolaik/python-nodejs:python3.10-nodejs23
 
 variables:
-  browser: Firefox
+  browser: firefox
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
