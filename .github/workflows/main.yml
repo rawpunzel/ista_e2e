@@ -3,6 +3,7 @@ run-name: ${{ github.actor }} runs Main Pipeline
 on:
   pull_request:
     types: [opened, reopened]
+  workflow_dispatch:
 jobs:
   E2E-Tests:
     runs-on: ubuntu-22.04
