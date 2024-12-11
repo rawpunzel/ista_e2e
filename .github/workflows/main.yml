@@ -16,6 +16,11 @@ jobs:
         with:
           python-version: '3.10'
           cache: 'pipenv'
+      - uses: insightsengineering/pip-action@v2
+        with:
+          packages: |
+            pipenv
+      - run: pip install 
       - run: echo $(ls -ls)
       - run: npm run setup
       - run: npm run start&
