@@ -35,6 +35,7 @@ unit-test-job:   # This job runs in the test stage.
     - npm run start&
     - sleep 10
     - pipenv install
+    - pipenv run playwright install-deps
     - pipenv run playwright install 
   script:
     - pipenv run python -m unittest discover -s tests -p '*_test.py'
