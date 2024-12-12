@@ -1,6 +1,6 @@
 # Functionality related to browser handling
 
-from os import environ
+from os import environ, path
 
 
 DEBUGS_LOCATION = "debugs"
@@ -46,4 +46,4 @@ def get_complete_url(path: str, host: str = None, proto: str = None):
 
 def stop_context(context, debugs_path=None):
     debugs_location = debugs_path or DEBUGS_LOCATION
-    context.tracing.stop(path=debugs_location)
+    context.tracing.stop(path=path.join(debugs_location, "traces.zip"))
