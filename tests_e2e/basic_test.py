@@ -40,7 +40,7 @@ class TestChangeAppointment(unittest.TestCase):
             # page = get_page_in_browser(playwright)
             # page.goto("http://localhost:8080/")
 
-            page = get_page_in_browser_open_site(path=appointment_page.path)
+            page = get_page_in_browser_open_site(playwright, path=appointment_page.path)
 
             for index, curr_appointment in enumerate(appointments):
                 all_options_clicked = index == len(appointments) - 1
