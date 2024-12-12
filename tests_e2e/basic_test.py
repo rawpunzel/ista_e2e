@@ -1,10 +1,9 @@
 import unittest
 import time
-from lib.browser import get_page_in_browser, get_page_in_browser_open_site
+from lib.browser import get_page_in_browser_open_site
 from lib.pages import appointment as appointment_page
-import re
 from dataclasses import dataclass
-from playwright.sync_api import Playwright, sync_playwright, expect
+from playwright.sync_api import sync_playwright, expect
 
 
 @dataclass
@@ -59,9 +58,9 @@ class TestChangeAppointment(unittest.TestCase):
                 expect(page.get_by_role("listitem")).to_contain_text(
                     f"Geschlecht: {curr_appointment.tec_gender}"
                 )
-                time.sleep(10)
                 page.get_by_role("button", name="Verschieben").click()
 
+                # Make sure buttons for all possible appointments are displayed
                 for button, appointment in zip(
                     self.appointment_buttons, self.appointments
                 ):
@@ -71,6 +70,8 @@ class TestChangeAppointment(unittest.TestCase):
                             name=f"{appointment.date} {appointment.duration_start} - {appointment.duration_end}",
                         ),
                     ).to_contain_text(button)
+
+                # If all options have been clicked there will be no "next_appointment"
                 if not all_options_clicked:
                     next_appointment = self.appointments[index + 1]
                     print(f"Next appointment: {next_appointment}")
