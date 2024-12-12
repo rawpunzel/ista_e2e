@@ -19,7 +19,7 @@ class Appointment:
 
 
 class TestChangeAppointment(unittest.TestCase):
-    def test_ChangeAppointment(self):
+    def setUp():
         appointments = [
             Appointment("2024-09-18", "10:00", "11:00", "John", "Doe", 35, "Male"),
             Appointment("2024-09-19", "14:00", "15:00", "Jane", "Smith", 30, "Female"),
@@ -28,22 +28,20 @@ class TestChangeAppointment(unittest.TestCase):
             ),
         ]
 
+        # Adding the first entry again as the last, as it should be selected at last time and checked once more
+        appointments.append(appointments[0])
+
         appointment_buttons = [
             f"{appointment.date} {appointment.duration_start} - {appointment.duration_end} Techniker: {appointment.tec_first_name} {appointment.tec_last_name} ({appointment.tec_age} Jahre alt, {appointment.tec_gender})"
             for appointment in appointments
         ]
 
-        # Adding the first entry again as the last, as it should be selected at last time and checked once more
-        appointments.append(appointments[0])
-
+    def test_ChangeAppointment(self):
         with sync_playwright() as playwright:
-            # page = get_page_in_browser(playwright)
-            # page.goto("http://localhost:8080/")
-
             page = get_page_in_browser_open_site(playwright, path=appointment_page.path)
 
-            for index, curr_appointment in enumerate(appointments):
-                all_options_clicked = index == len(appointments) - 1
+            for index, curr_appointment in enumerate(self.appointments):
+                all_options_clicked = index == len(self.appointments) - 1
                 print(f"Current Appointment: {curr_appointment}")
                 expect(page.locator("h3")).to_contain_text(curr_appointment.date)
                 expect(page.get_by_role("listitem")).to_contain_text(
@@ -64,7 +62,9 @@ class TestChangeAppointment(unittest.TestCase):
                 time.sleep(10)
                 page.get_by_role("button", name="Verschieben").click()
 
-                for button, appointment in zip(appointment_buttons, appointments):
+                for button, appointment in zip(
+                    self.appointment_buttons, self.appointments
+                ):
                     expect(
                         page.get_by_role(
                             "button",
@@ -72,7 +72,7 @@ class TestChangeAppointment(unittest.TestCase):
                         ),
                     ).to_contain_text(button)
                 if not all_options_clicked:
-                    next_appointment = appointments[index + 1]
+                    next_appointment = self.appointments[index + 1]
                     print(f"Next appointment: {next_appointment}")
                     page.get_by_role(
                         "button",
