@@ -98,7 +98,7 @@ class TestChangeAppointment(unittest.TestCase):
                 ).click()
 
     def tearDown(self):
-        stop_context(self.context, self.__name__)
+        stop_context(self.context, self.__class__.__name__)
 
 
 if __name__ == "__main__":
