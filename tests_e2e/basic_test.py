@@ -19,7 +19,7 @@ class Appointment:
 
 
 class TestChangeAppointment(unittest.TestCase):
-    def setUp():
+    def setUp(self):
         appointments = [
             Appointment("2024-09-18", "10:00", "11:00", "John", "Doe", 35, "Male"),
             Appointment("2024-09-19", "14:00", "15:00", "Jane", "Smith", 30, "Female"),
