@@ -42,6 +42,7 @@ class TestChangeAppointment(unittest.TestCase):
             page = get_page_in_browser_open_site(playwright, path=appointment_page.path)
             page.wait_for_load_state()
             page.wait_for_load_state("load")
+            page.wait_for_load_state("networkidle")
 
             for index, curr_appointment in enumerate(self.appointments):
                 all_options_clicked = index == len(self.appointments) - 1
@@ -62,7 +63,9 @@ class TestChangeAppointment(unittest.TestCase):
                 expect(page.get_by_role("listitem")).to_contain_text(
                     f"Geschlecht: {curr_appointment.tec_gender}"
                 )
-                # time.sleep(10)
+
+                # Further investigation needed. Page reports to be loaded, but without the s
+                time.sleep(10)
                 page.get_by_role("button", name="Verschieben").click()
 
                 page.wait_for_load_state()
@@ -92,10 +95,6 @@ class TestChangeAppointment(unittest.TestCase):
                         "button",
                         name=f"{next_appointment.date} {next_appointment.duration_start} - {next_appointment.duration_end}",
                     ).click()
-
-                # ---------------------
-            # context.close()
-            # browser.close()
 
 
 if __name__ == "__main__":
