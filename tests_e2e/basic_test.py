@@ -1,7 +1,7 @@
 import unittest
 import time
 from lib.browser import get_page_in_browser, get_page_in_browser_open_site
-from lib import pages
+from lib.pages import appointment as appointment_page
 import re
 from dataclasses import dataclass
 from playwright.sync_api import Playwright, sync_playwright, expect
@@ -40,7 +40,7 @@ class TestChangeAppointment(unittest.TestCase):
             # page = get_page_in_browser(playwright)
             # page.goto("http://localhost:8080/")
 
-            page = get_page_in_browser_open_site(path=pages.appointment.path)
+            page = get_page_in_browser_open_site(path=appointment_page.path)
 
             for index, curr_appointment in enumerate(appointments):
                 all_options_clicked = index == len(appointments) - 1
