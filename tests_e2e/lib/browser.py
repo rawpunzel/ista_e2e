@@ -47,3 +47,5 @@ def get_complete_url(path: str, host: str = None, proto: str = None):
 def stop_context(context, debugs_path=None):
     debugs_location = debugs_path or DEBUGS_LOCATION
     context.tracing.stop(path=path.join(debugs_location, "traces.zip"))
+    with open(path.join(debugs_location, "somefile"), "w") as fh:
+        fh.write("Hallo")
