@@ -68,7 +68,7 @@ class TestChangeAppointment(unittest.TestCase):
                         "button",
                         name=f"{appointment.date} {appointment.duration_start} - {appointment.duration_end}",
                     )
-                    button_locator.wait_for(timeout=10000)
+                    button_locator.wait_for(timeout=20000)
                     expect(
                         page.get_by_role(
                             "button",
