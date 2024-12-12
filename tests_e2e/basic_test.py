@@ -64,6 +64,11 @@ class TestChangeAppointment(unittest.TestCase):
                 for button, appointment in zip(
                     self.appointment_buttons, self.appointments
                 ):
+                    button_locator = page.get_by_role(
+                        "button",
+                        name=f"{appointment.date} {appointment.duration_start} - {appointment.duration_end}",
+                    )
+                    button_locator.wait_for(timout=10000)
                     expect(
                         page.get_by_role(
                             "button",
