@@ -36,7 +36,7 @@ class TestChangeAppointment(unittest.TestCase):
             f"{appointment.date} {appointment.duration_start} - {appointment.duration_end} Techniker: {appointment.tec_first_name} {appointment.tec_last_name} ({appointment.tec_age} Jahre alt, {appointment.tec_gender})"
             for appointment in self.appointments
         ]
-        self.playwright = sync_playwright()
+        self.playwright = sync_playwright().start()
 
     def test_ChangeAppointment(self):
         page, self.context = get_page_in_browser_open_site(
