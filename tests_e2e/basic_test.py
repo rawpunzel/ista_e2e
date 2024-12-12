@@ -65,9 +65,9 @@ class TestChangeAppointment(unittest.TestCase):
                 # time.sleep(10)
                 page.get_by_role("button", name="Verschieben").click()
 
-                page.wait_for_loadstate()
-                page.wait_for_loadstate("load")
-                page.wait_for_loadstate("networkidle")
+                page.wait_for_load_state()
+                page.wait_for_load_state("load")
+                page.wait_for_load_state("networkidle")
                 # Make sure buttons for all possible appointments are displayed
                 for button, appointment in zip(
                     self.appointment_buttons, self.appointments
