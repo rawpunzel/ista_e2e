@@ -49,4 +49,4 @@ def stop_context(context, debugs_path=None):
     context.tracing.stop(path=path.join(debugs_location, "traces.zip"))
     with open(path.join(debugs_location, "somefile"), "w") as fh:
         fh.write("Hallo")
-    print(f"{path.getcwd}")
+    print(f"{getcwd()}")
