@@ -60,9 +60,9 @@ class TestChangeAppointment(unittest.TestCase):
                 expect(page.get_by_role("listitem")).to_contain_text(
                     f"Geschlecht: {curr_appointment.tec_gender}"
                 )
+                time.sleep(10)
                 page.get_by_role("button", name="Verschieben").click()
 
-                time.sleep(10)
                 # Make sure buttons for all possible appointments are displayed
                 for button, appointment in zip(
                     self.appointment_buttons, self.appointments
