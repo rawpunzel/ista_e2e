@@ -83,8 +83,8 @@ class TestChangeAppointment(unittest.TestCase):
                     ).click()
 
                 # ---------------------
-            context.close()
-            browser.close()
+            # context.close()
+            # browser.close()
 
 
 if __name__ == "__main__":
