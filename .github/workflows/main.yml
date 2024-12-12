@@ -42,3 +42,8 @@ jobs:
         run: pipenv run playwright install 
       - name: Running E2E tests
         run: pipenv run python -m unittest discover -s tests_e2e -p '*_test.py'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: debugs
+          path: debugs/
+
