@@ -99,8 +99,8 @@ class TestChangeAppointment(unittest.TestCase):
                         name=f"{next_appointment.date} {next_appointment.duration_start} - {next_appointment.duration_end}",
                     ).click()
 
-        def tearDown():
-            stop_context(self.context)
+    def tearDown(self):
+        stop_context(self.context)
 
 
 if __name__ == "__main__":
