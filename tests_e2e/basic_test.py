@@ -29,11 +29,11 @@ class TestChangeAppointment(unittest.TestCase):
         ]
 
         # Adding the first entry again as the last, as it should be selected at last time and checked once more
-        self.appointments.append(appointments[0])
+        self.appointments.append(self.appointments[0])
 
         self.appointment_buttons = [
             f"{appointment.date} {appointment.duration_start} - {appointment.duration_end} Techniker: {appointment.tec_first_name} {appointment.tec_last_name} ({appointment.tec_age} Jahre alt, {appointment.tec_gender})"
-            for appointment in appointments
+            for appointment in self.appointments
         ]
 
     def test_ChangeAppointment(self):
