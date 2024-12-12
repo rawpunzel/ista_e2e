@@ -1,9 +1,9 @@
 import unittest
 import time
-from os import environ
-import re
+from lib.browser import get_page_in_browser_open_site, stop_context
+from lib.pages import appointment as appointment_page
 from dataclasses import dataclass
-from playwright.sync_api import Playwright, sync_playwright, expect
+from playwright.sync_api import sync_playwright, expect
 
 
 @dataclass
@@ -18,8 +18,10 @@ class Appointment:
 
 
 class TestChangeAppointment(unittest.TestCase):
-    def test_ChangeAppointment(self):
-        appointments = [
+    expect.set_options(timeout=10_000)
+
+    def setUp(self):
+        self.appointments = [
             Appointment("2024-09-18", "10:00", "11:00", "John", "Doe", 35, "Male"),
             Appointment("2024-09-19", "14:00", "15:00", "Jane", "Smith", 30, "Female"),
             Appointment(
@@ -27,24 +29,25 @@ class TestChangeAppointment(unittest.TestCase):
             ),
         ]
 
-        appointment_buttons = [
+        # Adding the first entry again as the last, as it should be selected at last time and checked once more
+        self.appointments.append(self.appointments[0])
+
+        self.appointment_buttons = [
             f"{appointment.date} {appointment.duration_start} - {appointment.duration_end} Techniker: {appointment.tec_first_name} {appointment.tec_last_name} ({appointment.tec_age} Jahre alt, {appointment.tec_gender})"
-            for appointment in appointments
+            for appointment in self.appointments
         ]
 
-        # Adding the first entry again as the last, as it should be selected at last time and checked once more
-        appointments.append(appointments[0])
-
+    def test_ChangeAppointment(self):
         with sync_playwright() as playwright:
-            browsername = environ.get("browser", "chromium").lower()
-            print(browsername)
-            browsobj = getattr(playwright, browsername)
-            browser = browsobj.launch(headless=True)
-            context = browser.new_context()
-            page = context.new_page()
-            page.goto("http://localhost:8080/")
-            for index, curr_appointment in enumerate(appointments):
-                all_options_clicked = index == len(appointments) - 1
+            page, self.context = get_page_in_browser_open_site(
+                playwright, path=appointment_page.path
+            )
+            page.wait_for_load_state()
+            page.wait_for_load_state("load")
+            page.wait_for_load_state("networkidle")
+
+            for index, curr_appointment in enumerate(self.appointments):
+                all_options_clicked = index == len(self.appointments) - 1
                 print(f"Current Appointment: {curr_appointment}")
                 expect(page.locator("h3")).to_contain_text(curr_appointment.date)
                 expect(page.get_by_role("listitem")).to_contain_text(
@@ -62,27 +65,42 @@ class TestChangeAppointment(unittest.TestCase):
                 expect(page.get_by_role("listitem")).to_contain_text(
                     f"Geschlecht: {curr_appointment.tec_gender}"
                 )
+
+                # Further investigation needed. Page reports to be loaded, but without the sleep it before clicking the button it does not load the
+                # appointments
                 time.sleep(10)
                 page.get_by_role("button", name="Verschieben").click()
 
-                for button, appointment in zip(appointment_buttons, appointments):
+                page.wait_for_load_state()
+                page.wait_for_load_state("load")
+                page.wait_for_load_state("networkidle")
+                # Make sure buttons for all possible appointments are displayed
+                for button, appointment in zip(
+                    self.appointment_buttons, self.appointments
+                ):
+                    button_locator = page.get_by_role(
+                        "button",
+                        name=f"{appointment.date} {appointment.duration_start} - {appointment.duration_end}",
+                    )
+                    button_locator.wait_for(state="attached", timeout=20000)
                     expect(
                         page.get_by_role(
                             "button",
                             name=f"{appointment.date} {appointment.duration_start} - {appointment.duration_end}",
                         ),
-                    ).to_contain_text(button)
+                    ).to_contain_text(button, timeout=15000)
+
+                # If all options have been clicked there will be no "next_appointment"
                 if not all_options_clicked:
-                    next_appointment = appointments[index + 1]
+                    next_appointment = self.appointments[index + 1]
                     print(f"Next appointment: {next_appointment}")
                     page.get_by_role(
                         "button",
                         name=f"{next_appointment.date} {next_appointment.duration_start} - {next_appointment.duration_end}",
                     ).click()
 
-                # ---------------------
-            context.close()
-            browser.close()
+        def tearDown():
+            stop_context(self.context)
 
 
 if __name__ == "__main__":
