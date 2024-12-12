@@ -25,16 +25,20 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - uses: insightsengineering/pip-action@v2
+      - name: Install pipenv
+        uses: insightsengineering/pip-action@v2
         with:
           packages: |
             pipenv
-      - run: npm run setup
-      - run: npm run start&
-      - run: pipenv install
-      - run: pipenv run playwright install-deps
-      - run: pipenv run playwright install 
-      - run: pipenv run echo $browser
-      - run: pipenv run python -m unittest discover -s tests_e2e -p '*_test.py'
-
- 
+      - name: Setup application
+        run: npm run setup
+      - name: Start webserver
+        run: npm run start&
+      - name: Setting up python environment via pipenv
+        run: pipenv install
+      - name: Installing playwright dependencies
+        run: pipenv run playwright install-deps
+      - name: Installing playwright
+        run: pipenv run playwright install 
+      - name: Running E2E tests
+        run: pipenv run python -m unittest discover -s tests_e2e -p '*_test.py'
