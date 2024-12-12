@@ -64,8 +64,8 @@ class TestChangeAppointment(unittest.TestCase):
                     f"Geschlecht: {curr_appointment.tec_gender}"
                 )
 
-                # Further investigation needed. Page reports to be loaded, but without the s
-                time.sleep(10)
+                # Further investigation needed. Page reports to be loaded, but without the sleep
+                time.sleep(3)
                 page.get_by_role("button", name="Verschieben").click()
 
                 page.wait_for_load_state()
