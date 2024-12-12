@@ -20,7 +20,7 @@ class Appointment:
 
 class TestChangeAppointment(unittest.TestCase):
     def setUp(self):
-        appointments = [
+        self.appointments = [
             Appointment("2024-09-18", "10:00", "11:00", "John", "Doe", 35, "Male"),
             Appointment("2024-09-19", "14:00", "15:00", "Jane", "Smith", 30, "Female"),
             Appointment(
@@ -29,9 +29,9 @@ class TestChangeAppointment(unittest.TestCase):
         ]
 
         # Adding the first entry again as the last, as it should be selected at last time and checked once more
-        appointments.append(appointments[0])
+        self.appointments.append(appointments[0])
 
-        appointment_buttons = [
+        self.appointment_buttons = [
             f"{appointment.date} {appointment.duration_start} - {appointment.duration_end} Techniker: {appointment.tec_first_name} {appointment.tec_last_name} ({appointment.tec_age} Jahre alt, {appointment.tec_gender})"
             for appointment in appointments
         ]
