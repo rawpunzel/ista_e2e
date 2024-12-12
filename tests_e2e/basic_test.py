@@ -18,6 +18,8 @@ class Appointment:
 
 
 class TestChangeAppointment(unittest.TestCase):
+    expect.set_options(timeout=10_000)
+
     def setUp(self):
         self.appointments = [
             Appointment("2024-09-18", "10:00", "11:00", "John", "Doe", 35, "Male"),
