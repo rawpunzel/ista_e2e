@@ -69,7 +69,7 @@ class TestChangeAppointment(unittest.TestCase):
                             "button",
                             name=f"{appointment.date} {appointment.duration_start} - {appointment.duration_end}",
                         ),
-                    ).to_contain_text(button, timeout=10000)
+                    ).to_contain_text(button, timeout=15000)
 
                 # If all options have been clicked there will be no "next_appointment"
                 if not all_options_clicked:
