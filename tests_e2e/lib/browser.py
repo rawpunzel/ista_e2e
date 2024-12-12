@@ -42,3 +42,8 @@ def get_complete_url(path: str, host: str = None, proto: str = None):
     proto = proto or "http"
 
     return f"{proto}://{host}{path}"
+
+
+def stop_context(context, debugs_path=None):
+    debugs_location = debugs_path or DEBUGS_LOCATION
+    context.tracing.stop(path=debugs_location)

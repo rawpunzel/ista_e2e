@@ -1,6 +1,6 @@
 import unittest
 import time
-from lib.browser import get_page_in_browser_open_site
+from lib.browser import get_page_in_browser_open_site, stop_context
 from lib.pages import appointment as appointment_page
 from dataclasses import dataclass
 from playwright.sync_api import sync_playwright, expect
@@ -39,7 +39,7 @@ class TestChangeAppointment(unittest.TestCase):
 
     def test_ChangeAppointment(self):
         with sync_playwright() as playwright:
-            page, context = get_page_in_browser_open_site(
+            page, self.context = get_page_in_browser_open_site(
                 playwright, path=appointment_page.path
             )
             page.wait_for_load_state()
@@ -98,6 +98,9 @@ class TestChangeAppointment(unittest.TestCase):
                         "button",
                         name=f"{next_appointment.date} {next_appointment.duration_start} - {next_appointment.duration_end}",
                     ).click()
+
+        def tearDown():
+            stop_context(self.context)
 
 
 if __name__ == "__main__":
