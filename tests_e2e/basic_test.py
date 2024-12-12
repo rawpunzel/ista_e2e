@@ -39,7 +39,9 @@ class TestChangeAppointment(unittest.TestCase):
 
     def test_ChangeAppointment(self):
         with sync_playwright() as playwright:
-            page = get_page_in_browser_open_site(playwright, path=appointment_page.path)
+            page, context = get_page_in_browser_open_site(
+                playwright, path=appointment_page.path
+            )
             page.wait_for_load_state()
             page.wait_for_load_state("load")
             page.wait_for_load_state("networkidle")
@@ -64,8 +66,9 @@ class TestChangeAppointment(unittest.TestCase):
                     f"Geschlecht: {curr_appointment.tec_gender}"
                 )
 
-                # Further investigation needed. Page reports to be loaded, but without the sleep
-                time.sleep(3)
+                # Further investigation needed. Page reports to be loaded, but without the sleep it before clicking the button it does not load the
+                # appointments
+                time.sleep(10)
                 page.get_by_role("button", name="Verschieben").click()
 
                 page.wait_for_load_state()
