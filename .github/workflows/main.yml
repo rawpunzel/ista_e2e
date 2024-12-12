@@ -5,7 +5,12 @@ on:
     types: [opened, reopened]
   workflow_dispatch:
 jobs:
+  Build:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "Building would happen here. Generating some artifact, which will be passed to the subsequent jobs"
   E2E-Tests:
+    needs: Build
     runs-on: ubuntu-24.04
     strategy:
       matrix:
