@@ -40,6 +40,8 @@ class TestChangeAppointment(unittest.TestCase):
     def test_ChangeAppointment(self):
         with sync_playwright() as playwright:
             page = get_page_in_browser_open_site(playwright, path=appointment_page.path)
+            page.waitForLoadState()
+            page.waitForLoadState("load")
 
             for index, curr_appointment in enumerate(self.appointments):
                 all_options_clicked = index == len(self.appointments) - 1
