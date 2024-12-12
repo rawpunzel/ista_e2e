@@ -1,3 +1,6 @@
+# Lösung/Anmerkungen
+Lösung und Anmerkungen siehe hier: [Lösung](/SOLUTION.md)
+
 # QA Automation Coding Challenge
 
 Dieses Repository enthält eine Interview-Challenge für die Position des Senior QA Automation Engineers bei Ista Express.
