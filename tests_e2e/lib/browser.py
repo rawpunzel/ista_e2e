@@ -1,6 +1,6 @@
 # Functionality related to browser handling
 
-from os import environ, path
+from os import environ, path, getcwd
 
 
 DEBUGS_LOCATION = "debugs"
@@ -49,3 +49,4 @@ def stop_context(context, debugs_path=None):
     context.tracing.stop(path=path.join(debugs_location, "traces.zip"))
     with open(path.join(debugs_location, "somefile"), "w") as fh:
         fh.write("Hallo")
+    print(f"{path.getcwd}")
