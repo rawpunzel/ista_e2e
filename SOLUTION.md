@@ -1,6 +1,36 @@
 # E2E Test-Setup
 
+## Pipeline/Workflow
 
+Ich habe keine Trennung nach Build und Test-Job gemacht, da ich mich mit npm genug auskenne um zu wissen welche Dateien (wenn überhaupt) ein Bau-Ergebnis wären.
+Der Build-Prozess ist durch einen Buil-Job angedeutet. 
+Idealerweise würde dort ein Docker-Image enstehen das wiederum zum testen genutzt werden könnte.
+
+- Tests werden nach Browser parallel ausgeführt
+  - weitere Paralelisierung wäre ähnlich über Testcase-Tags möglich
+- npm- und pipenv-Daten werden gecached um höhere Ausführungsgeschwindigkeit zu bekommen
+- Plawright-Debug-Artefakte werden eingesammelt
+
+
+## E2E-Test
+
+- befindet sich im Verzeichnis tests_e2e
+- tests_e2e/lib/browser.py enthält einige allgemeine Funktionen zum Aufsetzen des Browsers
+  - ausgelagert da für mehrere Testcases identisch
+- tests_e2e/lib/pages enthält die Daten zur zu Unter-Seiten
+  - nur rudimentär angedeutet
+  - würde bei mehreren Testcases die Locator-Daten der Elemente und Schablonen für die Texte enthalten
+     - hat den Vorteil das bei Änderungen nur eine Stelle für mehrere Testcases geändert werden muss
+     - die Informationen sind derzeit direkt im Testcase enthalten
+
+
+## Einschränkungen
+
+Im E2E-Testcase befindet sich ein fixes sleep von 10 Sekunden nach dem klicken des "Verschieben"-Buttons.
+Die Ausführung auf den Nodes ist langsamer? und auf die Schnelle habe ich keine Möglichkeit gefunden den Test ohne das sleep erfolgreich auszuführen.
+Nach und vor dem Ausführen des "Verschieben"-Buttons (der einen Request) sendet wird, wird gewartet das die Seite fertig geladen ist, trotzdem funktioniert es nicht.
+Hier ist weitere Analyse notwendig was da genau passiert, dafür reichte die Zeit nicht mehr.
+In einer produktiven Umgebung wäre das nicht akzeptabel.
 
 
 # Ideales CI/CD für QA
