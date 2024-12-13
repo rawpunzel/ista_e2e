@@ -1,7 +1,7 @@
 # Functionality related to browser handling
 
-from os import environ, path
-
+from os import environ, path, getcwd
+import random
 
 DEBUGS_LOCATION = "debugs"
 
@@ -44,6 +44,9 @@ def get_complete_url(path: str, host: str = None, proto: str = None):
     return f"{proto}://{host}{path}"
 
 
-def stop_context(context, debugs_path=None):
+def stop_context(context, testname: str, debugs_path=None):
     debugs_location = debugs_path or DEBUGS_LOCATION
-    context.tracing.stop(path=path.join(debugs_location, "traces.zip"))
+    job_name = environ.get("GITHUB_JOB", str(random.random))
+    context.tracing.stop(
+        path=path.join(debugs_location, f"{job_name}_{testname}_traces.zip")
+    )

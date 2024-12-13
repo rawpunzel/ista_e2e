@@ -36,71 +36,69 @@ class TestChangeAppointment(unittest.TestCase):
             f"{appointment.date} {appointment.duration_start} - {appointment.duration_end} Techniker: {appointment.tec_first_name} {appointment.tec_last_name} ({appointment.tec_age} Jahre alt, {appointment.tec_gender})"
             for appointment in self.appointments
         ]
+        self.playwright = sync_playwright().start()
 
     def test_ChangeAppointment(self):
-        with sync_playwright() as playwright:
-            page, self.context = get_page_in_browser_open_site(
-                playwright, path=appointment_page.path
+        page, self.context = get_page_in_browser_open_site(
+            self.playwright, path=appointment_page.path
+        )
+        page.wait_for_load_state()
+        page.wait_for_load_state("load")
+        page.wait_for_load_state("networkidle")
+
+        for index, curr_appointment in enumerate(self.appointments):
+            all_options_clicked = index == len(self.appointments) - 1
+            print(f"Current Appointment: {curr_appointment}")
+            expect(page.locator("h3")).to_contain_text(curr_appointment.date)
+            expect(page.get_by_role("listitem")).to_contain_text(
+                f"Zeitraum: {curr_appointment.duration_start} - {curr_appointment.duration_end}"
             )
+            expect(page.get_by_role("listitem")).to_contain_text(
+                "Durchzuführende Arbeit: Austauch der Rauchwarnmelder"
+            )
+            expect(page.get_by_role("listitem")).to_contain_text(
+                f"Name: {curr_appointment.tec_first_name} {curr_appointment.tec_last_name}"
+            )
+            expect(page.get_by_role("listitem")).to_contain_text(
+                f"Alter: {curr_appointment.tec_age}"
+            )
+            expect(page.get_by_role("listitem")).to_contain_text(
+                f"Geschlecht: {curr_appointment.tec_gender}"
+            )
+
+            # Further investigation needed. Page reports to be loaded, but without the sleep it before clicking the button it does not load the
+            # appointments
+            time.sleep(10)
+            page.get_by_role("button", name="Verschieben").click()
+
             page.wait_for_load_state()
             page.wait_for_load_state("load")
             page.wait_for_load_state("networkidle")
-
-            for index, curr_appointment in enumerate(self.appointments):
-                all_options_clicked = index == len(self.appointments) - 1
-                print(f"Current Appointment: {curr_appointment}")
-                expect(page.locator("h3")).to_contain_text(curr_appointment.date)
-                expect(page.get_by_role("listitem")).to_contain_text(
-                    f"Zeitraum: {curr_appointment.duration_start} - {curr_appointment.duration_end}"
+            # Make sure buttons for all possible appointments are displayed
+            for button, appointment in zip(self.appointment_buttons, self.appointments):
+                button_locator = page.get_by_role(
+                    "button",
+                    name=f"{appointment.date} {appointment.duration_start} - {appointment.duration_end}",
                 )
-                expect(page.get_by_role("listitem")).to_contain_text(
-                    "Durchzuführende Arbeit: Austauch der Rauchwarnmelder"
-                )
-                expect(page.get_by_role("listitem")).to_contain_text(
-                    f"Name: {curr_appointment.tec_first_name} {curr_appointment.tec_last_name}"
-                )
-                expect(page.get_by_role("listitem")).to_contain_text(
-                    f"Alter: {curr_appointment.tec_age}"
-                )
-                expect(page.get_by_role("listitem")).to_contain_text(
-                    f"Geschlecht: {curr_appointment.tec_gender}"
-                )
-
-                # Further investigation needed. Page reports to be loaded, but without the sleep it before clicking the button it does not load the
-                # appointments
-                time.sleep(10)
-                page.get_by_role("button", name="Verschieben").click()
-
-                page.wait_for_load_state()
-                page.wait_for_load_state("load")
-                page.wait_for_load_state("networkidle")
-                # Make sure buttons for all possible appointments are displayed
-                for button, appointment in zip(
-                    self.appointment_buttons, self.appointments
-                ):
-                    button_locator = page.get_by_role(
-                        "button",
-                        name=f"{appointment.date} {appointment.duration_start} - {appointment.duration_end}",
-                    )
-                    button_locator.wait_for(state="attached", timeout=20000)
-                    expect(
-                        page.get_by_role(
-                            "button",
-                            name=f"{appointment.date} {appointment.duration_start} - {appointment.duration_end}",
-                        ),
-                    ).to_contain_text(button, timeout=15000)
-
-                # If all options have been clicked there will be no "next_appointment"
-                if not all_options_clicked:
-                    next_appointment = self.appointments[index + 1]
-                    print(f"Next appointment: {next_appointment}")
+                button_locator.wait_for(state="attached", timeout=20000)
+                expect(
                     page.get_by_role(
                         "button",
-                        name=f"{next_appointment.date} {next_appointment.duration_start} - {next_appointment.duration_end}",
-                    ).click()
+                        name=f"{appointment.date} {appointment.duration_start} - {appointment.duration_end}",
+                    ),
+                ).to_contain_text(button, timeout=15000)
 
-        def tearDown():
-            stop_context(self.context)
+            # If all options have been clicked there will be no "next_appointment"
+            if not all_options_clicked:
+                next_appointment = self.appointments[index + 1]
+                print(f"Next appointment: {next_appointment}")
+                page.get_by_role(
+                    "button",
+                    name=f"{next_appointment.date} {next_appointment.duration_start} - {next_appointment.duration_end}",
+                ).click()
+
+    def tearDown(self):
+        stop_context(self.context, self.__class__.__name__)
 
 
 if __name__ == "__main__":
