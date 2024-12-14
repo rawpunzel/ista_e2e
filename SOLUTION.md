@@ -31,6 +31,15 @@ In einer produktiven Umgebung wäre das natürlich inakzeptabel. Man müsste dan
 Der Grund ist das wenn man auf "Verschieben" drückt um den Termin zu verschieben das GET für "http://localhost:3000/api/appointments/appointment-1/available-timeslots" um die alternativen Termine zu laden manchmal mit Connection-Refused beantwortet wird.
 Der Grund liegt vermutlich in Neustarts des Entwicklungsservers auf Grund geänderter Dateien.
 
+## Abweichung von Aufgabenstellung
+
+Aus der Aufgabe
+> Baue mit Github Actions eine pipeline um das Projekt zu bauen und zu starten und dann die Tests auszuführen, wenn ein Pull Request erstellt wird. (1 Punkt)
+
+Es erschien mir sinnvoll die Pipeline nicht nur beim eröffnen des Pull Requests, sondern auch beim wiederöffnen und wenn weitere Commits hinzugefügt werden (zum Beispiel auf Grund von Code-Review-Kommentaren) auszuführen, da sich der Code ja dann ändert.
+Würde man nur beim eröffnen des MR die Pipeline ausführen müsste man, es entsprechend so anspassen:
+    pull_request:
+      types: [opened]
 
 # Ideales CI/CD für QA
 
