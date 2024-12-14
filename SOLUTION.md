@@ -26,11 +26,10 @@ Idealerweise würde dort ein Docker-Image enstehen das wiederum zum testen genut
 
 ## Einschränkungen
 
-Im E2E-Testcase befindet sich ein fixes sleep von 10 Sekunden nach dem klicken des "Verschieben"-Buttons.
-Die Ausführung auf den Nodes ist langsamer? und auf die Schnelle habe ich keine Möglichkeit gefunden den Test ohne das sleep erfolgreich auszuführen.
-Nach und vor dem Ausführen des "Verschieben"-Buttons (der einen Request) sendet wird, wird gewartet das die Seite fertig geladen ist, trotzdem funktioniert es nicht.
-Hier ist weitere Analyse notwendig was da genau passiert, dafür reichte die Zeit nicht mehr.
-In einer produktiven Umgebung wäre das nicht akzeptabel.
+Im E2E-Testcase befindet sich ein fixes sleep von 10 Sekunden vor dem klicken des "Verschieben"-Buttons.
+In einer produktiven Umgebung wäre das natürlich inakzeptabel. Man müsste dann das eigentliche Problem beheben.
+Der Grund ist das wenn man auf "Verschieben" drückt um den Termin zu verschieben das GET für "http://localhost:3000/api/appointments/appointment-1/available-timeslots" um die alternativen Termine zu laden manchmal mit Connection-Refused beantwortet wird.
+Der Grund liegt vermutlich in Neustarts des Entwicklungsservers auf Grund geänderter Dateien.
 
 
 # Ideales CI/CD für QA
