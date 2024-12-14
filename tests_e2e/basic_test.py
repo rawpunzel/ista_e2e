@@ -42,9 +42,7 @@ class TestChangeAppointment(unittest.TestCase):
         page, self.context = get_page_in_browser_open_site(
             self.playwright, path=appointment_page.path
         )
-        page.wait_for_load_state()
         page.wait_for_load_state("load")
-        page.wait_for_load_state("networkidle")
 
         for index, curr_appointment in enumerate(self.appointments):
             all_options_clicked = index == len(self.appointments) - 1
@@ -71,9 +69,7 @@ class TestChangeAppointment(unittest.TestCase):
             time.sleep(10)
             page.get_by_role("button", name="Verschieben").click()
 
-            page.wait_for_load_state()
             page.wait_for_load_state("load")
-            page.wait_for_load_state("networkidle")
             # Make sure buttons for all possible appointments are displayed
             for button, appointment in zip(self.appointment_buttons, self.appointments):
                 button_locator = page.get_by_role(
