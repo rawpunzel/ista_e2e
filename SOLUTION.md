@@ -35,6 +35,29 @@ In einer produktiven Umgebung wäre das nicht akzeptabel.
 
 # Ideales CI/CD für QA
 
+## Abdeckung
+
+### Beim erstellen/modifizieren (neuer Commit) von Pull-Requests
+- Ziel schnelles Feedback, Pull-Requests ändern sich ggf. noch ein paar mal, die volle Pipeline durchlaufen zu lassen ist nicht unbedingt sinnvoll
+- Subset der E2E-Tests
+- Smoke-Tests -> grobes Testen grundlegender Funktionen (Subset Feature-Tests/Integration-Tests)
+- eventuell kann anhand von Regeln erkannt werden (Abhängig von Aufbau/Struktur der Software) welche Teile verändert wurden und welche Integrations-Tests Sinn machen
+
+
+### Beim Mergen in Main
+- Alle E2E-Tests
+- Integration-Tests/Feature-Tests
+- Regression-Tests
+- Last-Tests/Performance-Tests
+- Scan auf sicherheitslücken /ggf. explizite Sicherheitstests - da se sich um eine öffentlich zugängliche Anwendung handelt
+- Scan auf Pakete mit bekannten Sicherheitsproblemen
+
+### Manuelles Ausführen von Tests basierend auf Tags
+
+Möglichkeit einzelne Tests/Sets von Tests gegen einen Branch laufen zu lassen. 
+Die Tests könnten in Kategorien per Tags eingeteilt werden (für Teilaspkekte der Software oder/und Testarten) und per Dropdown ausgewählt werden.
+Dadurch können Teilaspekte (wo vielleicht Probleme vermutet werden oder wo der Entwickler weiß das er Änderungen vorgenommen hat) vor dem Pull-Request oder dem Merge getestet werden ohne die Notwendigkeit auf den Ablauf der gesamten Pipeline warten zu müssen.
+
 ## Eigenes Repository für Tests
 
 Eigenes Repository für die QA-Tests.
