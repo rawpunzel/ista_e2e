@@ -38,6 +38,7 @@ Aus der Aufgabe
 
 Es erschien mir sinnvoll die Pipeline nicht nur beim eröffnen des Pull Requests, sondern auch beim wiederöffnen und wenn weitere Commits hinzugefügt werden (zum Beispiel auf Grund von Code-Review-Kommentaren) auszuführen, da sich der Code ja dann ändert.
 Würde man nur beim eröffnen des MR die Pipeline ausführen müsste man, es entsprechend so anspassen:
+
     pull_request:
       types: [opened]
 
