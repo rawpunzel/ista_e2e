@@ -68,7 +68,6 @@ class TestChangeAppointment(unittest.TestCase):
 
             # Further investigation needed. Page reports to be loaded, but without the sleep it before clicking the button it does not load the
             # appointments
-            time.sleep(10)
             page.get_by_role("button", name="Verschieben").click()
 
             page.wait_for_load_state()
